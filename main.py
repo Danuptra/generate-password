@@ -74,8 +74,11 @@ def generate_password():
     if args.save:
         save = 'y'
     else:
-        save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
-    
+        try:
+            save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
+        except EOFError:
+            print(f"{blue}🛈 Skipping save prompt due to non-interactive environment.{default}")
+            save = 'n'
     if save == 'y':
         try:
             with open('.password.txt', 'w+', encoding='utf-8', newline='') as file:
