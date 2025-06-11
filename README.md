@@ -20,6 +20,7 @@ A simple and customizable Python script to generate secure, random passwords.
   - ✅ Numbers (0-9)
   - ✅ Symbols (!@#$%^&*...)
 - Easy to use and extend
+- Option to **save the generated password to a file**
 
 ---
 
