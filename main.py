@@ -2,6 +2,7 @@ import os
 import time
 import random
 import string
+import argparse
 
 purple = '\033[95m'
 green = '\033[92m'
@@ -9,6 +10,11 @@ blue = '\033[94m'
 default = '\033[0m'
 cyan = '\033[96m'
 red = '\033[0;31m'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--length', type=int, help='Password length')
+parser.add_argument('--save', action='store_true', help='Save password to file')
+args = parser.parse_args()
 
 def show_welcome():
     print(purple + '+----------------------------------------------+')
@@ -23,11 +29,14 @@ show_welcome()
 
 
 def generate_password():
-    try:
-        input_length = int(input(f"{cyan}How many characters do you want? \033[90m(minimum 14){default}\n> "))
-    except ValueError:
-        print(f"{red}Please enter a valid number!{default}")
-        return
+    if args.length:
+        input_length = args.length
+    else: 
+        try:
+            input_length = int(input(f"{cyan}How many characters do you want? \033[90m(minimum 14){default}\n> "))
+        except ValueError:
+            print(f"{red}Please enter a valid number!{default}")
+            return
 
     if input_length < 14:
         print(f"{red}Minimum 14 characters or more required!{default}")
@@ -62,13 +71,16 @@ def generate_password():
     final_password = ''.join(password)
     print(f"{cyan}\nGenerated Password:{default} {final_password}")
     
-    save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
-
+    if args.save:
+        save = 'y'
+    else:
+        save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
+    
     if save == 'y':
         try:
             with open('.password.txt', 'w+', encoding='utf-8', newline='') as file:
                 file.write(f'Your password : {final_password}\n')
-                print(f'✅ {green} Password save to .password.txt {default}')
+                print(f'\n✅ {green} Password save to .password.txt {default}')
         except FileNotFoundError:
             return
     else:
