@@ -30,7 +30,7 @@ jobs:
           SAVE="${{ github.event.inputs.save }}"
 
           if [ "$SAVE" = "yes" ]; then
-            python main.py --length "$LENGTH" --save
+            python main.py --length "$LENGTH" --save yes
           else
             python main.py --length "$LENGTH"
           fi
@@ -41,3 +41,4 @@ jobs:
         with:
           name: generated-password
           path: .password.txt
+          include-hidden-files: true

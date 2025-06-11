@@ -13,7 +13,7 @@ red = '\033[0;31m'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--length', type=int, help='Password length')
-parser.add_argument('--save', action='store_true', help='Save password to file')
+parser.add_argument('--save', type=str, choices=['yes', 'no'], default='no', help='Save password to file (yes/no)')
 args = parser.parse_args()
 
 def show_welcome():
@@ -71,11 +71,14 @@ def generate_password():
     final_password = ''.join(password)
     print(f"{cyan}\nGenerated Password:{default} {final_password}")
     
-    if args.save:
+    if args.save.lower() in ['yes', 'y']:
         save = 'y'
     else:
-        save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
-    
+        try:
+            save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
+        except EOFError:
+            print(f"{blue}🛈 Skipping save prompt due to non-interactive environment.{default}")
+            save = 'n'
     if save == 'y':
         try:
             with open('.password.txt', 'w+', encoding='utf-8', newline='') as file:
