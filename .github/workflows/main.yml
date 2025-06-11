@@ -1,0 +1,43 @@
+name: Run Password Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      length:
+        description: 'Password length (min 14)'
+        required: true
+        default: '14'
+      save:
+        description: 'Save to file? (yes/no)'
+        required: true
+        default: 'no'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run password generator
+        run: |
+          LENGTH="${{ github.event.inputs.length }}"
+          SAVE="${{ github.event.inputs.save }}"
+
+          if [ "$SAVE" = "yes" ]; then
+            python password_generator.py --length "$LENGTH" --save
+          else
+            python password_generator.py --length "$LENGTH"
+          fi
+
+      - name: Upload password file
+        if: ${{ github.event.inputs.save == 'yes' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-password
+          path: .password.txt
