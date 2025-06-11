@@ -60,12 +60,18 @@ def generate_password():
 
     random.shuffle(password)
     final_password = ''.join(password)
-    print(f"{cyan}Generated Password:{default} {final_password}")
+    print(f"{cyan}\nGenerated Password:{default} {final_password}")
+    
+    save = input(f"{purple}\nDo you want to save this password to a file?{default} {cyan}(Y/n){default}: ").strip().lower()
 
-    try:
-        with open('.password.txt', 'w+', encoding='utf-8', newline='') as file:
-            file.write(f'Your password : {final_password}\n')
-    except FileNotFoundError:
-        return 
+    if save == 'y':
+        try:
+            with open('.password.txt', 'w+', encoding='utf-8', newline='') as file:
+                file.write(f'Your password : {final_password}\n')
+                print(f'✅ {green} Password save to .password.txt {default}')
+        except FileNotFoundError:
+            return
+    else:
+        print(f'\n{blue}🛈 Password not saved{default}')
 generate_password()
     
