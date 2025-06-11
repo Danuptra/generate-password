@@ -62,5 +62,10 @@ def generate_password():
     final_password = ''.join(password)
     print(f"{cyan}Generated Password:{default} {final_password}")
 
+    try:
+        with open('.password.txt', 'w+', encoding='utf-8', newline='') as file:
+            file.write(f'Your password : {final_password}\n')
+    except FileNotFoundError:
+        return 
 generate_password()
     
