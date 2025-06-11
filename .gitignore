@@ -1,2 +1,2 @@
 # Ignore all password output files
-password_*.txt
+password.txt

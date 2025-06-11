@@ -30,9 +30,9 @@ jobs:
           SAVE="${{ github.event.inputs.save }}"
 
           if [ "$SAVE" = "yes" ]; then
-            python password_generator.py --length "$LENGTH" --save
+            python main.py --length "$LENGTH" --save
           else
-            python password_generator.py --length "$LENGTH"
+            python main.py --length "$LENGTH"
           fi
 
       - name: Upload password file
