@@ -13,7 +13,35 @@ on:
         default: 'no'
 
 jobs:
-  generate:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: pip install coverage
+      
+      - name: Run test with coverage
+        run: coverage run -m unittest test_main.py
+
+      - name: Report coverage
+        run: coverage report
+
+      - name: Generate HTML coverage report
+        run: coverage html
+      
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: htmlcov/
+
+
+  generate-password:
+    needs: unit-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,18 +51,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
-      - name: Install dependencies
-        run: pip install coverage
-
-      - name: Run test with coverage
-        run: coverage run -m unittest test_main.py
-
-      - name: Report coverage
-        run: coverage report
-
-      - name: Generate HTML coverage report
-        run: coverage html
 
       - name: Run password generator
         run: |
@@ -54,9 +70,3 @@ jobs:
           name: generated-password
           path: .password.txt
           include-hidden-files: true
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: htmlcov/
