@@ -1,7 +1,8 @@
+import os
 import time
-import random
 import string
 import argparse
+import secrets
 
 purple = '\033[95m'
 green = '\033[92m'
@@ -25,26 +26,25 @@ def show_welcome():
 def generate_password(input_length):
     if input_length < 14:
         raise ValueError("Minimum 14 characters or more required!")
-    # Rules Character
-    char1 = list(string.ascii_lowercase)
-    char2 = list(string.ascii_uppercase)
-    char3 = list(string.digits)
-    char4 = list(string.punctuation)
-    random.shuffle(char1)
-    random.shuffle(char2)
-    random.shuffle(char3)
-    random.shuffle(char4)
+    # Secure password generation using secrets
+    char1 = string.ascii_lowercase
+    char2 = string.ascii_uppercase
+    char3 = string.digits
+    char4 = string.punctuation
     step_one = round(input_length * (20/100))
     step_two = round(input_length * (30/100))
     remaining = input_length - (step_one * 2 + step_two * 2)
     password = []
-    password.extend(random.choices(char1, k=step_one))
-    password.extend(random.choices(char2, k=step_one))
-    password.extend(random.choices(char3, k=step_two))
-    password.extend(random.choices(char4, k=step_two))
+    password.extend(secrets.choice(char1) for _ in range(step_one))
+    password.extend(secrets.choice(char2) for _ in range(step_one))
+    password.extend(secrets.choice(char3) for _ in range(step_two))
+    password.extend(secrets.choice(char4) for _ in range(step_two))
     full_password = char1 + char2 + char3 + char4
-    password.extend(random.choices(full_password, k=remaining))
-    random.shuffle(password)
+    password.extend(secrets.choice(full_password) for _ in range(remaining))
+    # Secure shuffle
+    for i in range(len(password) - 1, 0, -1):
+        j = secrets.randbelow(i + 1)
+        password[i], password[j] = password[j], password[i]
     final_password = ''.join(password)
     return final_password
 

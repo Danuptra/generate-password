@@ -1,6 +1,30 @@
 # 🔐 Password Generator
 
-A simple and customizable Python script to generate secure, random passwords.
+A simple, secure, and production-ready Python password generator with full DevOps pipeline integration.
+
+---
+
+[![CI/CD](https://github.com/Danuptra/generate-password/actions/workflows/main.yml/badge.svg)](https://github.com/Danuptra/generate-password/actions)
+[![Coverage](https://img.shields.io/badge/coverage-automated-brightgreen)](htmlcov/index.html)
+[![Security Scanning](https://img.shields.io/badge/security-SAST-blue)](https://github.com/Danuptra/generate-password/actions)
+
+---
+
+## 🚀 DevOps & Security Highlights
+
+This repository demonstrates strong DevOps and security practices:
+
+- **Automated CI/CD** with GitHub Actions
+    - Unit testing with coverage reporting
+    - Build artifacts for password output and coverage reports
+- **SAST (Static Application Security Testing)**
+    - Bandit for Python static code analysis
+- **Security Best Practices**
+    - Password generation uses Python's `secrets` module (cryptographically secure)
+    - Automated checks for code quality and vulnerabilities
+- **Modular & Testable Code**
+    - Testable with `unittest`
+    - Coverage report generated and uploaded as artifact
 
 ---
 
@@ -49,6 +73,17 @@ A simple and customizable Python script to generate secure, random passwords.
     ```bash
     python main.py
     ```
+
+---
+
+## 🛡️ CI/CD & Security Pipeline Example
+
+CI/CD pipeline (GitHub Actions):
+- SAST: `bandit -r .` (static code analysis)
+- Unit Test & Coverage: `coverage run -m unittest test_main.py` + `coverage report` + `coverage html`
+- Artifacts: Password file & HTML coverage report auto-uploaded
+
+You can see the workflow in `.github/workflows/main.yml`.
 
 ---
 
